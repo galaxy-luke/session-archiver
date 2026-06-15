@@ -4,7 +4,7 @@ date: {{date}}
 startTime: {{startTime}}
 endTime: {{endTime}}
 duration: {{duration}}
-generatedBy: @claude-code/session-archiver
+generatedBy: session-archiver
 model: {{model}}
 complexity: {{complexity}}
 status: draft
@@ -75,4 +75,4 @@ project: {{projectPath}}
 
 ---
 
-*此草稿由 @claude-code/session-archiver 自動生成，請在審查後編輯和完善內容。*
+*此草稿由 session-archiver 自動生成，請在審查後編輯和完善內容。*

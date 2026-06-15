@@ -67,7 +67,7 @@ date: 2026-06-14
 startTime: 14:30:00
 endTime: 16:30:00
 duration: 2h 0m
-generatedBy: @claude-code/session-archiver
+generatedBy: session-archiver
 model: claude-3-5-sonnet-20241022
 complexity: 5
 status: ready
