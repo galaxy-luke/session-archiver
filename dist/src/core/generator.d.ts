@@ -5,7 +5,7 @@
 import { SessionCollector } from '../collectors/sessionCollector';
 import { FileCollector } from '../collectors/fileCollector';
 import { GitCollector } from '../collectors/gitCollector';
-import { AnthropicClient } from '../ai/anthropicClient';
+import { UniversalAIClient } from '../ai/universalAIClient';
 import { AISummary } from '../ai/types';
 /**
  * Generator context with session metadata
@@ -37,7 +37,7 @@ export declare class Generator {
     private vaultPath;
     private templatePath;
     private git;
-    constructor(sessionCollector: SessionCollector, fileCollector: FileCollector, gitCollector: GitCollector, aiClient: AnthropicClient, vaultPath: string, templatePath: string);
+    constructor(sessionCollector: SessionCollector, fileCollector: FileCollector, gitCollector: GitCollector, aiClient: UniversalAIClient, vaultPath: string, templatePath: string);
     /**
      * Generate a complete session draft
      * @param context - Generator context

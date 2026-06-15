@@ -6,7 +6,7 @@
 import { SessionCollector, SessionData, SessionContext, SessionMessage } from '../collectors/sessionCollector';
 import { FileCollector, FileChanges } from '../collectors/fileCollector';
 import { GitCollector, GitData } from '../collectors/gitCollector';
-import { AnthropicClient } from '../ai/anthropicClient';
+import { UniversalAIClient } from '../ai/universalAIClient';
 import { AISummary, AISummaryRequest, ModelSelection, FileChange } from '../ai/types';
 import { promises as fs } from 'fs';
 import * as path from 'path';
@@ -44,7 +44,7 @@ export class Generator {
     private sessionCollector: SessionCollector,
     private fileCollector: FileCollector,
     private gitCollector: GitCollector,
-    private aiClient: AnthropicClient,
+    private aiClient: UniversalAIClient,
     private vaultPath: string,
     private templatePath: string
   ) {

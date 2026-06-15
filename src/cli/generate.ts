@@ -3,7 +3,8 @@ import { Generator } from '../core/generator';
 import { SessionCollector } from '../collectors/sessionCollector';
 import { FileCollector } from '../collectors/fileCollector';
 import { GitCollector } from '../collectors/gitCollector';
-import { AnthropicClient } from '../ai/anthropicClient';
+import { UniversalAIClient } from '../ai/universalAIClient';
+import { AIProvider } from '../ai/types';
 import { GeneratorContext } from '../core/generator';
 import { ConfigManager } from '../utils/configManager';
 import { env } from '../utils/env';
@@ -43,13 +44,24 @@ export const generateCommand = new Command('generate')
         process.exit(1);
       }
 
-      // Get API key
+      // Get API key and provider
       let apiKey;
+      let provider: AIProvider = 'anthropic';
+      let baseURL;
+
       try {
-        apiKey = env.ANTHROPIC_AUTH_TOKEN();
+        // Try to get API key from config first
+        if (config.ai.apiKey) {
+          apiKey = config.ai.apiKey;
+          provider = config.ai.provider || 'anthropic';
+          baseURL = config.ai.apiEndpoint;
+        } else {
+          // Fall back to environment variable
+          apiKey = env.ANTHROPIC_AUTH_TOKEN();
+        }
       } catch (error) {
-        console.error('❌ Error: Anthropic API key not found');
-        console.log('Please set ANTHROPIC_AUTH_TOKEN environment variable');
+        console.error('❌ Error: API key not found');
+        console.log('Please set API key in config or ANTHROPIC_AUTH_TOKEN environment variable');
         process.exit(1);
       }
 
@@ -71,7 +83,11 @@ export const generateCommand = new Command('generate')
       const sessionCollector = new SessionCollector();
       const fileCollector = new FileCollector();
       const gitCollector = new GitCollector();
-      const aiClient = new AnthropicClient(apiKey);
+      const aiClient = new UniversalAIClient({
+        provider,
+        apiKey,
+        baseURL
+      });
 
       // Create generator
       const generator = new Generator(

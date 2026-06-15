@@ -39,7 +39,7 @@ const generator_1 = require("../core/generator");
 const sessionCollector_1 = require("../collectors/sessionCollector");
 const fileCollector_1 = require("../collectors/fileCollector");
 const gitCollector_1 = require("../collectors/gitCollector");
-const anthropicClient_1 = require("../ai/anthropicClient");
+const universalAIClient_1 = require("../ai/universalAIClient");
 const configManager_1 = require("../utils/configManager");
 const env_1 = require("../utils/env");
 const path = __importStar(require("path"));
@@ -71,14 +71,25 @@ exports.generateCommand = new commander_1.Command('generate')
             console.log('Please run: session-archiver init');
             process.exit(1);
         }
-        // Get API key
+        // Get API key and provider
         let apiKey;
+        let provider = 'anthropic';
+        let baseURL;
         try {
-            apiKey = env_1.env.ANTHROPIC_AUTH_TOKEN();
+            // Try to get API key from config first
+            if (config.ai.apiKey) {
+                apiKey = config.ai.apiKey;
+                provider = config.ai.provider || 'anthropic';
+                baseURL = config.ai.apiEndpoint;
+            }
+            else {
+                // Fall back to environment variable
+                apiKey = env_1.env.ANTHROPIC_AUTH_TOKEN();
+            }
         }
         catch (error) {
-            console.error('❌ Error: Anthropic API key not found');
-            console.log('Please set ANTHROPIC_AUTH_TOKEN environment variable');
+            console.error('❌ Error: API key not found');
+            console.log('Please set API key in config or ANTHROPIC_AUTH_TOKEN environment variable');
             process.exit(1);
         }
         // Create generator context (for now, use mock values)
@@ -97,7 +108,11 @@ exports.generateCommand = new commander_1.Command('generate')
         const sessionCollector = new sessionCollector_1.SessionCollector();
         const fileCollector = new fileCollector_1.FileCollector();
         const gitCollector = new gitCollector_1.GitCollector();
-        const aiClient = new anthropicClient_1.AnthropicClient(apiKey);
+        const aiClient = new universalAIClient_1.UniversalAIClient({
+            provider,
+            apiKey,
+            baseURL
+        });
         // Create generator
         const generator = new generator_1.Generator(sessionCollector, fileCollector, gitCollector, aiClient, vaultPath, templatePath);
         console.log('⏳ Generating session summary...');

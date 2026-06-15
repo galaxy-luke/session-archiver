@@ -13,10 +13,14 @@ export interface ObsidianConfig {
  * AI configuration
  */
 export interface AIConfig {
+    enabled?: boolean;
+    provider?: 'anthropic' | 'openai' | 'glm';
     apiKey?: string;
+    apiEndpoint?: string;
     model: string;
     maxTokens?: number;
     temperature?: number;
+    fallbackModels?: string[];
 }
 /**
  * Archiving configuration

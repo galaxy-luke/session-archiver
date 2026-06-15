@@ -59,4 +59,11 @@ export interface AISummary {
 export interface ModelSelection {
   model: string;
   complexity: number;
+  maxTokens?: number;
+  temperature?: number;
 }
+
+/**
+ * AI Provider types
+ */
+export type AIProvider = 'openai' | 'anthropic' | 'glm';
