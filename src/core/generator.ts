@@ -216,7 +216,9 @@ export class Generator {
         '{{projectPath}}': context.projectPath,
         '{{generatedAt}}': generatedAt,
         '{{tokensUsed}}': summary.元數據.tokensUsed,
-        '{{cost}}': summary.元數據.cost.toFixed(4),
+        '{{cost}}': typeof summary.元數據.cost === 'number'
+          ? summary.元數據.cost.toFixed(4)
+          : summary.元數據.cost,
         '{{gitStatus}}': gitStatusText,
         '{{gitCommits}}': gitCommitsText,
         '{{fileChanges}}': fileChangesText

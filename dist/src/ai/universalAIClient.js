@@ -219,10 +219,11 @@ ${request.workDirectory}
                 '下次行動',
                 '元數據'
             ];
-            for (const field of requiredFields) {
-                if (!(field in parsed)) {
-                    throw new Error(`Missing required field: ${field}`);
-                }
+            const missingFields = requiredFields.filter(field => !(field in parsed));
+            if (missingFields.length > 0) {
+                console.error('❌ Missing fields:', missingFields);
+                console.error('📄 Actual response keys:', Object.keys(parsed));
+                throw new Error(`Missing required field: ${missingFields[0]}`);
             }
             return parsed;
         }
