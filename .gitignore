@@ -1,0 +1,56 @@
+.spectra/
+openspec/.vector-search.db*
+*.csv
+*.xlsx
+.env
+__pycache__/
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build output (keep dist/ for npm distribution, ignore build artifacts)
+*.tsbuildinfo
+
+# Environment variables
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Archive directories (optional)
+archives/
+sessions/
+
+# Daemon runtime artifacts (PID + status files written at runtime)
+.daemon-pid
+.daemon-status.json
+

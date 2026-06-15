@@ -1,0 +1,28 @@
+{
+  "projectName": "your-project-name",
+  "obsidian": {
+    "vaultPath": "/path/to/your/obsidian/vault",
+    "attachmentFolder": "attachments",
+    "dateFormat": "yyyy-MM-dd HH:mm:ss"
+  },
+  "ai": {
+    "model": "claude-3-5-sonnet-20241022",
+    "maxTokens": 4096,
+    "temperature": 0.7
+  },
+  "archiving": {
+    "archiveInterval": 300000,
+    "maxRetries": 3,
+    "retryDelay": 5000
+  },
+  "daemon": {
+    "enabled": false,
+    "checkInterval": 60000,
+    "idleTimeout": 300000
+  },
+  "templates": {
+    "sessionNote": "# Session: {{date}}\n\n## Summary\n{{summary}}\n\n## Key Points\n{{keyPoints}}\n\n## Tags\n{{tags}}",
+    "summaryTemplate": "Brief summary of the session",
+    "tagsTemplate": "session-archiver, {{date}}"
+  }
+}
