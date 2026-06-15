@@ -1,6 +1,6 @@
 # Installation Guide
 
-This guide will walk you through installing and setting up @claude-code/session-archiver.
+This guide will walk you through installing and setting up session-archiver.
 
 ## Prerequisites
 
@@ -19,13 +19,13 @@ Before installing, ensure you have the following:
 Install the package globally using npm:
 
 ```bash
-npm install -g @claude-code/session-archiver
+npm install -g session-archiver
 ```
 
 Or using yarn:
 
 ```bash
-yarn global add @claude-code/session-archiver
+yarn global add session-archiver
 ```
 
 ### Verify Installation
@@ -115,13 +115,13 @@ session-archiver config validate
 To upgrade to the latest version:
 
 ```bash
-npm update -g @claude-code/session-archiver
+npm update -g session-archiver
 ```
 
 Or with yarn:
 
 ```bash
-yarn global upgrade @claude-code/session-archiver
+yarn global upgrade session-archiver
 ```
 
 ## Uninstallation
@@ -129,7 +129,7 @@ yarn global upgrade @claude-code/session-archiver
 To remove the package completely:
 
 ```bash
-npm uninstall -g @claude-code/session-archiver
+npm uninstall -g session-archiver
 ```
 
 Remove configuration files:

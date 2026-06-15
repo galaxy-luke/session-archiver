@@ -1,6 +1,6 @@
 # Usage Guide
 
-This guide covers all commands and usage patterns for @claude-code/session-archiver.
+This guide covers all commands and usage patterns for session-archiver.
 
 ## CLI Commands Overview
 

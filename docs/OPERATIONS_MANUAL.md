@@ -1,4 +1,4 @@
-# 📘 @claude-code/session-archiver 操作手冊
+# 📘 session-archiver 操作手冊
 
 ## 📦 目錄
 
@@ -17,7 +17,7 @@
 
 ```bash
 # 1. 全局安裝
-npm install -g @claude-code/session-archiver
+npm install -g session-archiver
 
 # 2. 配置 Claude Code Hooks
 session-archiver setup-claude
@@ -48,10 +48,10 @@ session-archiver daemon start
 
 ```bash
 # 使用 npm
-npm install -g @claude-code/session-archiver
+npm install -g session-archiver
 
 # 或使用 yarn
-yarn global add @claude-code/session-archiver
+yarn global add session-archiver
 ```
 
 ### 3. 驗證安裝
@@ -378,7 +378,7 @@ session-archiver archive --file "G:\\我的雲端硬碟\\2ndBrain\\草稿\\draft
 
 ```bash
 # 全局安裝
-npm install -g @claude-code/session-archiver
+npm install -g session-archiver
 
 # 配置 Claude Code Hooks
 session-archiver setup-claude
