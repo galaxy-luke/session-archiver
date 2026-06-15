@@ -46,7 +46,8 @@ export class Generator {
     private gitCollector: GitCollector,
     private aiClient: UniversalAIClient,
     private vaultPath: string,
-    private templatePath: string
+    private templatePath: string,
+    private templateConfig?: any
   ) {
     this.git = simpleGit();
   }
@@ -158,9 +159,49 @@ export class Generator {
     aiFileChanges: FileChange[]
   ): Promise<string> {
     try {
-      // Read template
-      const templateFilePath = path.join(this.templatePath, 'session-draft.md');
-      let template = await fs.readFile(templateFilePath, 'utf-8');
+      // Smart template lookup with configuration
+      let template: string = '';
+      let templateLoaded = false;
+
+      // Determine which template to use based on config
+      const templateType = this.templateConfig?.templateType || 'default';
+      const sharedTemplatesPath = this.templateConfig?.sharedTemplatesPath ||
+        'G:\\我的雲端硬碟\\2ndBrain\\範本 Templates';
+
+      console.log(`🔍 Template configuration: type=${templateType}, sharedPath=${sharedTemplatesPath}`);
+
+      // 1. Try project-specific template first
+      const projectTemplatePath = path.join(this.templatePath, 'session-draft.md');
+      try {
+        template = await fs.readFile(projectTemplatePath, 'utf-8');
+        templateLoaded = true;
+        console.log('📝 Using project-specific template');
+      } catch (error) {
+        // 2. Try shared templates directory based on type
+        const templateFileName = this.getTemplateName(templateType);
+        const sharedTemplatePaths = [
+          path.join(sharedTemplatesPath, templateFileName),
+          path.join(process.env.USERPROFILE || '', 'Documents\\範本 Templates', templateFileName),
+          path.join(process.env.HOME || '', 'Templates', templateFileName)
+        ];
+
+        for (const sharedPath of sharedTemplatePaths) {
+          try {
+            template = await fs.readFile(sharedPath, 'utf-8');
+            templateLoaded = true;
+            console.log(`📝 Using shared template: ${sharedPath}`);
+            break;
+          } catch (err) {
+            // Continue to next path
+          }
+        }
+
+        // 3. Use built-in default template as last resort
+        if (!templateLoaded) {
+          console.log('📝 Using built-in default template');
+          template = this.getDefaultTemplate(templateType);
+        }
+      }
 
       // Calculate duration
       const duration = this.calculateDuration(context.startTime, context.endTime);
@@ -236,6 +277,207 @@ export class Generator {
       }
       throw new Error('Failed to render template: Unknown error');
     }
+  }
+
+  /**
+   * Get template name based on template type
+   * @param templateType - Type of template
+   * @returns Template filename
+   */
+  private getTemplateName(templateType: string): string {
+    const templateMap: Record<string, string> = {
+      'default': 'session-draft.md',
+      'simple': 'session-draft-simple.md',
+      'tech': 'session-draft-tech.md',
+      'custom': 'session-draft.md'
+    };
+    return templateMap[templateType] || 'session-draft.md';
+  }
+
+  /**
+   * Get default template when custom template is not found
+   * @param templateType - Type of template to generate
+   * @returns Default template content
+   */
+  private getDefaultTemplate(templateType: string = 'default'): string {
+    const templates: Record<string, string> = {
+      'default': this.getDefaultTemplateFull(),
+      'simple': this.getDefaultTemplateSimple(),
+      'tech': this.getDefaultTemplateTech()
+    };
+    return templates[templateType] || templates['default'];
+  }
+
+  /**
+   * Get full default template
+   */
+  private getDefaultTemplateFull(): string {
+    return `---
+type: session-draft
+date: {{date}}
+startTime: {{startTime}}
+endTime: {{endTime}}
+duration: {{duration}}
+generatedBy: session-archiver
+model: {{model}}
+complexity: {{complexity}}
+status: draft
+tags: [session, draft, project]
+project: {{projectPath}}
+---
+
+# 會話總結
+
+{{summary}}
+
+## 主要工作項目
+
+{{mainWorkItems}}
+
+## 技術決策與理由
+
+{{techDecisions}}
+
+## 關鍵程式碼片段
+
+{{codeSnippets}}
+
+## 問題與解決
+
+{{problemsSolutions}}
+
+## 下次行動
+
+{{nextActions}}
+
+## 相關檔案
+
+### 檔案變更
+
+{{fileChanges}}
+
+### Git 狀態
+
+\`\`\`
+{{gitStatus}}
+\`\`\`
+
+### Git 提交
+
+{{gitCommits}}
+
+## 相關資源
+
+- 會話ID: {{sessionId}}
+- 使用的模型: {{model}}
+- 會話時長: {{duration}}
+- Token 使用量: {{tokensUsed}}
+- 預估成本: \${{cost}}
+
+## 元數據
+
+\`\`\`json
+{
+  "generatedAt": "{{generatedAt}}",
+  "model": "{{model}}",
+  "complexity": {{complexity}},
+  "tokensUsed": {{tokensUsed}},
+  "cost": {{cost}},
+  "sessionId": "{{sessionId}}"
+}
+\`\`\`
+
+---
+
+*此草稿由 session-archiver 自動生成，請在審查後編輯和完善內容。*`;
+  }
+
+  /**
+   * Get simple default template
+   */
+  private getDefaultTemplateSimple(): string {
+    return `---
+type: session-draft
+date: {{date}}
+status: draft
+project: {{projectPath}}
+---
+
+# {{date}} 會話記錄
+
+## 摘要
+{{summary}}
+
+## 完成項目
+{{mainWorkItems}}
+
+## 下次行動
+{{nextActions}}
+
+---
+*會話ID: {{sessionId}} | 模型: {{model}} | 時長: {{duration}}*`;
+  }
+
+  /**
+   * Get tech-focused default template
+   */
+  private getDefaultTemplateTech(): string {
+    return `---
+type: session-draft
+date: {{date}}
+startTime: {{startTime}}
+endTime: {{endTime}}
+duration: {{duration}}
+generatedBy: session-archiver
+model: {{model}}
+complexity: {{complexity}}
+status: draft
+tags: [session, tech, development]
+project: {{projectPath}}
+---
+
+# {{date}} 技術會話
+
+## 🎯 會話概要
+
+**摘要**: {{summary}}
+
+**主要目標**: {{mainWorkItems}}
+
+## 💻 技術實現
+
+### 程式碼變更
+{{codeSnippets}}
+
+### 技術決策
+{{techDecisions}}
+
+## 🐛 問題與解決
+
+{{problemsSolutions}}
+
+## 📋 後續任務
+
+{{nextActions}}
+
+## 📊 會話元數據
+
+- **會話ID**: {{sessionId}}
+- **使用模型**: {{model}}
+- **會話時長**: {{duration}}
+- **Token使用**: {{tokensUsed}}
+- **預估成本**: \${{cost}}
+- **複雜度**: {{complexity}}/10
+
+## 🔗 相關連結
+
+- **專案路徑**: {{projectPath}}
+- **Git狀態**: {{gitStatus}}
+- **相關提交**: {{gitCommits}}
+
+---
+
+*由 session-archiver 自動生成 | {{generatedAt}}*`;
   }
 
   /**

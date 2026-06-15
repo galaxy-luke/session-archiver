@@ -89,14 +89,15 @@ export const generateCommand = new Command('generate')
         baseURL
       });
 
-      // Create generator
+      // Create generator with template configuration
       const generator = new Generator(
         sessionCollector,
         fileCollector,
         gitCollector,
         aiClient,
         vaultPath,
-        templatePath
+        templatePath,
+        config.templates // Pass template configuration
       );
 
       console.log('⏳ Generating session summary...');

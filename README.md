@@ -1,45 +1,137 @@
 # session-archiver
 
-AI-powered session summary and archiving system for AI coding assistants (Claude Code, Copilot CLI, etc.).
+🤖 AI-powered session summary and archiving system for AI coding assistants with multi-model support.
 
-## Features
+## ✨ Features
 
-- 🔄 **Automatic Session Detection** - Monitors AI coding assistant session directories and detects completed sessions
-- 🤖 **AI-Powered Analysis** - Uses Claude AI to generate intelligent summaries and categorize sessions
-- 📁 **Organized Archive Structure** - Stores sessions in a structured format with rich metadata
-- 🔍 **Searchable Archive** - Full-text search across all archived sessions with advanced filtering
-- ⚙️ **Flexible Configuration** - Customizable watch paths, archive locations, and AI analysis settings
+- 🤖 **Multi-AI Provider Support** - Works with OpenAI (GPT-4), Google Gemini, GLM (智譒AI), and Ollama
+- 🔄 **Smart Template System** - Configurable templates with default, simple, and tech-focused options
+- 📁 **Organized Archive Structure** - Stores sessions in Obsidian vault with rich metadata
+- 🔍 **Intelligent Search** - Full-text search across all archived sessions
+- ⚙️ **Flexible Configuration** - YAML/JSON config support with shared template directories
+- 🎯 **Smart Model Switching** - Easy model switching with built-in tools
 
-## Installation
+## 🚀 Installation
 
 ```bash
-npm install -g session-archiver
+npm install -g session-archiver@latest
 ```
 
-## Quick Start
+## 📖 Quick Start
 
 ```bash
-# 1. Configure hooks for your AI coding assistant
-session-archiver setup-claude  # For Claude Code
-# or
-session-archiver setup-copilot  # For GitHub Copilot CLI (coming soon)
-
-# 2. Initialize the archiver
+# 1. Initialize the archiver
 session-archiver init
 
-# 3. Start the daemon
-session-archiver daemon start
+# 2. Configure AI provider (optional - uses GLM by default)
+node scripts/model-switcher.js switch glm glm-4.5-air
+
+# 3. Generate session summary
+session-archiver generate
 ```
 
-## Documentation
+## 🎨 Configuration
 
-- [Installation Guide](docs/INSTALLATION.md) - Detailed installation and setup instructions
-- [Usage Guide](docs/USAGE.md) - Complete CLI reference and usage examples
+### AI Provider Selection
 
-## License
+```bash
+# List available models
+node scripts/model-switcher.js list
+
+# Switch models
+node scripts/model-switcher.js switch glm glm-4.5-air    # GLM (推薦)
+node scripts/model-switcher.js switch openai gpt-4-turbo  # OpenAI
+node scripts/model-switcher.js switch google gemini-1.5-pro # Google
+node scripts/model-switcher.js switch ollama mistral       # Local
+```
+
+### Template Configuration
+
+Configure in `.project-config/session-archiver.json`:
+
+```json
+{
+  "templates": {
+    "templateType": "default",
+    "sharedTemplatesPath": "G:\\我的雲端硬碟\\2ndBrain\\範本 Templates"
+  }
+}
+```
+
+Available template types:
+- `default` - Full comprehensive template
+- `simple` - Minimalist format  
+- `tech` - Tech-focused template
+- `custom` - Your own template
+
+## 📚 Documentation
+
+- [AI Model Switching Guide](docs/ai-model-switching-guide.md) - Complete model selection guide
+- [Installation Guide](docs/INSTALLATION.md) - Setup instructions
+- [Configuration Reference](docs/CONFIGURATION.md) - All options explained
+
+## 🔧 Supported AI Providers
+
+| Provider | Models | Cost | Best For |
+|----------|--------|------|----------|
+| **GLM** | glm-4.5-air, glm-4.7-flash | Low | Daily development ⭐ |
+| **OpenAI** | gpt-4-turbo, gpt-4 | High | Complex analysis |
+| **Google** | gemini-1.5-pro, gemini-1.5-flash | Medium | Multimodal tasks |
+| **Ollama** | mistral, llama2, codellama | Free | Local testing |
+
+## 📦 Project Structure
+
+```
+your-project/
+├── .project-config/
+│   └── session-archiver.json    # Project configuration
+├── templates/
+│   └── session-draft.md          # Custom template (optional)
+└── scripts/
+    ├── model-switcher.js         # Model switching tool
+    └── edit-config.js           # Configuration editor
+```
+
+## 🎯 Usage Examples
+
+```bash
+# Generate session draft with current model
+session-archiver generate
+
+# Switch to faster model for quick drafts
+node scripts/model-switcher.js switch glm glm-4.7-flash
+session-archiver generate
+
+# Use high-quality model for important sessions
+node scripts/model-switcher.js switch openai gpt-4-turbo
+session-archiver generate
+
+# Edit configuration directly
+node scripts/edit-config.js set ai.temperature 0.8
+node scripts/edit-config.js show
+```
+
+## 🌐 Shared Templates
+
+Place templates in your shared directory for use across projects:
+
+```bash
+G:\我的雲端硬碟\2ndBrain\範本 Templates\
+├── session-draft.md           # Default template
+├── session-draft-simple.md    # Simple template  
+└── session-draft-tech.md      # Tech template
+```
+
+## 📄 License
 
 MIT
 
-## Support
+## 🤝 Support
 
-For issues, questions, or contributions, please visit the [project repository](https://github.com/galaxy-luke/session-archiver).
+- **Issues**: https://github.com/galaxy-luke/session-archiver/issues
+- **Documentation**: https://github.com/galaxy-luke/session-archiver/wiki
+- **NPM**: https://www.npmjs.com/package/session-archiver
+
+---
+
+**🎉 Perfect for developers using AI coding assistants who want intelligent session tracking with flexible AI provider options!**

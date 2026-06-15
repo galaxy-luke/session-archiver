@@ -46,6 +46,9 @@ export interface TemplatesConfig {
     sessionNote?: string;
     summaryTemplate?: string;
     tagsTemplate?: string;
+    templatePath?: string;
+    templateType?: 'default' | 'simple' | 'tech' | 'custom';
+    sharedTemplatesPath?: string;
 }
 /**
  * Main session archiver configuration

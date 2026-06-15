@@ -113,8 +113,9 @@ exports.generateCommand = new commander_1.Command('generate')
             apiKey,
             baseURL
         });
-        // Create generator
-        const generator = new generator_1.Generator(sessionCollector, fileCollector, gitCollector, aiClient, vaultPath, templatePath);
+        // Create generator with template configuration
+        const generator = new generator_1.Generator(sessionCollector, fileCollector, gitCollector, aiClient, vaultPath, templatePath, config.templates // Pass template configuration
+        );
         console.log('⏳ Generating session summary...');
         // Generate draft
         const result = await generator.generate(context);

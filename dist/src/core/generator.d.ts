@@ -36,8 +36,9 @@ export declare class Generator {
     private aiClient;
     private vaultPath;
     private templatePath;
+    private templateConfig?;
     private git;
-    constructor(sessionCollector: SessionCollector, fileCollector: FileCollector, gitCollector: GitCollector, aiClient: UniversalAIClient, vaultPath: string, templatePath: string);
+    constructor(sessionCollector: SessionCollector, fileCollector: FileCollector, gitCollector: GitCollector, aiClient: UniversalAIClient, vaultPath: string, templatePath: string, templateConfig?: any | undefined);
     /**
      * Generate a complete session draft
      * @param context - Generator context
@@ -54,6 +55,30 @@ export declare class Generator {
      * @returns Rendered template content
      */
     private renderDraft;
+    /**
+     * Get template name based on template type
+     * @param templateType - Type of template
+     * @returns Template filename
+     */
+    private getTemplateName;
+    /**
+     * Get default template when custom template is not found
+     * @param templateType - Type of template to generate
+     * @returns Default template content
+     */
+    private getDefaultTemplate;
+    /**
+     * Get full default template
+     */
+    private getDefaultTemplateFull;
+    /**
+     * Get simple default template
+     */
+    private getDefaultTemplateSimple;
+    /**
+     * Get tech-focused default template
+     */
+    private getDefaultTemplateTech;
     /**
      * Calculate duration between two dates in "Xh Ym" format
      * @param startTime - Start time
