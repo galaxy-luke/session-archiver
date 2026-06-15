@@ -248,6 +248,23 @@ ${request.workDirectory}
 
       const parsed = JSON.parse(cleanedText);
 
+      // Validate required fields with fallback mapping for simplified Chinese
+      const simplifiedToTraditionalMap: Record<string, string> = {
+        '主要工作项目': '主要工作項目',
+        '技术决策与理由': '技術決策與理由',
+        '关键代码片段': '關鍵程式碼片段',
+        '问题与解决方案': '問題與解決方案',
+        '下次行动': '下次行動',
+        '元数据': '元數據'
+      };
+
+      // Convert simplified Chinese keys to traditional Chinese
+      const normalizedParsed: any = {};
+      for (const [key, value] of Object.entries(parsed)) {
+        const normalizedKey = simplifiedToTraditionalMap[key] || key;
+        normalizedParsed[normalizedKey] = value;
+      }
+
       // Validate required fields
       const requiredFields: (keyof AISummary)[] = [
         '摘要',
@@ -259,14 +276,14 @@ ${request.workDirectory}
         '元數據'
       ];
 
-      const missingFields = requiredFields.filter(field => !(field in parsed));
+      const missingFields = requiredFields.filter(field => !(field in normalizedParsed));
       if (missingFields.length > 0) {
         console.error('❌ Missing fields:', missingFields);
         console.error('📄 Actual response keys:', Object.keys(parsed));
         throw new Error(`Missing required field: ${missingFields[0]}`);
       }
 
-      return parsed as AISummary;
+      return normalizedParsed as AISummary;
     } catch (error) {
       if (error instanceof SyntaxError) {
         throw new Error(`Failed to parse AI response as JSON: ${error.message}`);
