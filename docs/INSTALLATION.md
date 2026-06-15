@@ -14,9 +14,9 @@ Before installing, ensure you have the following:
 
 ## Installation
 
-### Global Install
+### 🚀 Quick Install (Recommended)
 
-Install the package globally using npm:
+The package is available on npm and can be installed directly:
 
 ```bash
 npm install -g session-archiver
@@ -27,6 +27,16 @@ Or using yarn:
 ```bash
 yarn global add session-archiver
 ```
+
+### 📦 Alternative: Install from GitHub
+
+If you prefer to install directly from GitHub:
+
+```bash
+npm install -g galaxy-luke/session-archiver
+```
+
+### 🔍 Verify Installation
 
 ### Verify Installation
 

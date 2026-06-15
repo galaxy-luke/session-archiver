@@ -46,12 +46,32 @@ session-archiver daemon start
 
 ### 2. 安裝套件
 
+#### 方法一：從 npm 安裝（推薦）
+
 ```bash
 # 使用 npm
 npm install -g session-archiver
 
 # 或使用 yarn
 yarn global add session-archiver
+```
+
+#### 方法二：從 GitHub 安裝
+
+```bash
+# 直接從 GitHub 安裝
+npm install -g galaxy-luke/session-archiver
+```
+
+#### 方法三：本地開發安裝
+
+```bash
+# 從源碼安裝（開發者）
+git clone https://github.com/galaxy-luke/session-archiver.git
+cd session-archiver
+npm install
+npm run build
+npm link
 ```
 
 ### 3. 驗證安裝
@@ -432,6 +452,62 @@ session-archiver archive --file "path/to/draft.md"
 ---
 
 ## 🐛 故障排除
+
+### 問題: npm 安裝失敗
+
+**症狀:**
+```
+❌ npm ERR! 404 Not Found - session-archiver
+```
+
+**解決方案:**
+
+1. **確認套件名稱正確**：
+```bash
+# 正確的安裝命令
+npm install -g session-archiver
+
+# 錯誤的安裝命令（不要使用）
+npm install -g @claude-code/session-archiver
+```
+
+2. **檢查 npm 版本**：
+```bash
+npm --version  # 應該是 8.0.0 或更高
+node --version # 應該是 18.0.0 或更高
+```
+
+3. **清理 npm 快取**：
+```bash
+npm cache clean --force
+npm install -g session-archiver
+```
+
+4. **使用 GitHub 作為備選**：
+```bash
+npm install -g galaxy-luke/session-archiver
+```
+
+### 問題: 命令找不到
+
+**症狀:**
+```
+bash: session-archiver: command not found
+```
+
+**解決方案:**
+
+```bash
+# 檢查全局安裝路徑
+npm config get prefix
+
+# 確保全局路徑在 PATH 中
+# macOS/Linux: export PATH=$PATH:$(npm config get prefix)/bin
+# Windows: 將 npm prefix 加到系統 PATH
+
+# 或使用 npx（不需要全局安裝）
+npx session-archiver --version
+```
 
 ### 問題: 守護進程無法啟動
 
