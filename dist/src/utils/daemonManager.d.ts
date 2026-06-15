@@ -30,6 +30,7 @@ export declare class DaemonManager {
     private deletePidFile;
     /**
      * Check if a process is running by PID
+     * Windows-compatible implementation
      */
     isProcessRunning(pid: number): Promise<boolean>;
     /**

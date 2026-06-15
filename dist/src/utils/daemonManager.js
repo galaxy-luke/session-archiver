@@ -81,12 +81,21 @@ class DaemonManager {
     }
     /**
      * Check if a process is running by PID
+     * Windows-compatible implementation
      */
     async isProcessRunning(pid) {
         try {
-            // Signal 0 checks if process exists without actually sending a signal
-            process.kill(pid, '0');
-            return true;
+            if (process.platform === 'win32') {
+                // Windows: use tasklist command to check process
+                const { execSync } = require('child_process');
+                const result = execSync(`tasklist /FI "PID eq ${pid}"`, { encoding: 'utf8' });
+                return result.includes(`${pid}`) && !result.includes('NOT FOUND');
+            }
+            else {
+                // Unix/Linux: use signal 0 to check process existence
+                process.kill(pid, '0');
+                return true;
+            }
         }
         catch (error) {
             if (error.code === 'ESRCH') {
@@ -97,7 +106,8 @@ class DaemonManager {
                 // Permission denied but process exists
                 return true;
             }
-            throw error;
+            // For Windows, command execution failures usually mean process doesn't exist
+            return false;
         }
     }
     /**
